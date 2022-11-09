@@ -25,6 +25,13 @@ async function run(){
         app.get('/review', async(req, res) =>{
             const query = {}
             const cursor = serviceCollection.find(query);
+            const review = await cursor.limit(3).toArray();
+            res.send(review);
+        });
+        app.get('/review/:id', async(req, res) =>{
+            const id= req.params.id;
+            const query = {_id: ObjectId(id)}
+            const cursor = serviceCollection.find(query);
             const review = await cursor.toArray();
             res.send(review);
         });
