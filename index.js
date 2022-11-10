@@ -22,6 +22,16 @@ async function run(){
         const serviceCollection = client.db('software').collection('review');
         const orderCollection = client.db('software').collection('orders');
 
+        app.post('/add-service', async(req, res, next) => {
+            console.log('inside',req.body)
+            const data= await serviceCollection.insertOne(req.body)
+            return res.status(200).json({
+                success: true,
+                message: "service added successfully"
+            })
+
+        })
+
         app.get('/review', async(req, res) =>{
             const query = {}
             const cursor = serviceCollection.find(query);
@@ -75,18 +85,7 @@ async function run(){
             const result = await orderCollection.updateOne(query, updatedDoc);
             res.send(result);
         })
-        // app.patch('/review-ret/:id', async(req, res) =>{
-        //     const id = req.params.id;
-        //     const status= req.body.status;
-        //     const query = {_id: ObjectId(id)};
-        //     const updatedDoc = {
-        //         $set: {
-        //             status: status
-        //         }
-        //     }
-        //     const result = await orderCollection.updateOne(query, updatedDoc);
-        //     res.send(result);
-        // })
+        
 
         app.delete('/myreviews/:id', async(req, res) =>{
             const id = req.params.id;
